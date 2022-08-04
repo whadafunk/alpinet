@@ -18,13 +18,15 @@ LABEL my_name="Daniel Grigore"
 LABEL my_site="Routerology"
 LABEL my_quote="The quick brown fox"
 
+RUN apk update
+RUN apk add sudo
+
 # We create the admin user like this to inhibit a password prompt
-RUN adduser --disabled-password -g admin -h /home/admin -s /bin/sh admin
+RUN adduser --disabled-password -g admin -G wheel -h /home/admin -s /bin/sh admin
 
 # Setting password for this in a script, would be the next question
 RUN echo "admin:pass123" | chpasswd
 
-RUN apk update
 RUN apk	add openssh-server
 RUN apk add openssh
 RUN apk add nmap
@@ -46,6 +48,7 @@ RUN chmod 600 /etc/ssh/ssh_host_*_key
 
 # Bring over our ssh config files (both server and client)
 COPY ./ssh/ /etc/ssh/
+COPY sudoers /etc/sudoers
 
 # We do not need this so much, but for exemplification purpose
 # we will anounce that our container listens on standard sshd port
