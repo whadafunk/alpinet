@@ -18,8 +18,10 @@ LABEL my_name="Daniel Grigore"
 LABEL my_site="Routerology"
 LABEL my_quote="The quick brown fox"
 
+# We create the admin user like this to inhibit a password prompt
 RUN adduser --disabled-password -g admin -h /home/admin -s /bin/sh admin
-# Setting password for this would be the next question
+
+# Setting password for this in a script, would be the next question
 RUN echo "admin:pass123" | chpasswd
 
 RUN apk update
@@ -46,7 +48,7 @@ RUN chmod 600 /etc/ssh/ssh_host_*_key
 COPY ./ssh/ /etc/ssh/
 
 # We do not need this so much, but for exemplification purpose
-# We will anounce that our container listens on sshd port
+# we will anounce that our container listens on standard sshd port
 EXPOSE 22/tcp
 
 # This is how we add our persistent storage
@@ -56,9 +58,11 @@ VOLUME /storage
 WORKDIR /root
 
 # Setting our shell prompt through ENV variables
-
 ENV PS1="\h \w> "
 
+
+#The default process can be either the shell, or the sshd server
+# I prefer to use CMD with sshd, so it can be overriden at container runtime with the shell or other command
 
 #CMD ["/bin/sh"]
 CMD ["/usr/sbin/sshd","-D","-4","-q","-p 22"]

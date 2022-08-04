@@ -1,8 +1,8 @@
 # NETWORK TOOLS CONTAINER
 
-## A little bit more than the standard official alpine container
+## A small toolset client based on Alpine Linux
 
-*I have added a couple of networking tools and sshd to the standard alpine image and that's that this container is all about*
+*I have added a couple of networking tools and sshd to the standard alpine image and that's that what this container is all about*
 
 ## Tools
 
@@ -19,7 +19,9 @@
 
 ## Instructions
 
-*The container is starting sshd and uses the config files from this directory*
+*The container is starting the sshd process and uses the config files from this directory*
+
+> docker container run -d --rm --name alpinet --hostname alpinet routerology/alpinet:latest
 
 To authenticate to ssh you can use the following credentials:
 
